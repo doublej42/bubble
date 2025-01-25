@@ -1,5 +1,6 @@
 import {MainScene} from './MainScene.js'
 
+
 const config = {
     type: Phaser.AUTO,
     width: 800,

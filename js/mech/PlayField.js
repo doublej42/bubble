@@ -1,11 +1,10 @@
-const GAMESIZE = 10000;
-export class Playfield {
+const GAMESIZE = 1000;
+export class PlayField {
     Scene;
     Cursors;
     Camera;
     constructor(scene)
     {
-        console.log('loading scene',scene);
         this.Scene = scene;
     }
     
@@ -21,8 +20,7 @@ export class Playfield {
         // Set up the camera
         this.Camera = this.Scene.cameras.main;
         this.Camera.setBounds(0, 0, GAMESIZE, GAMESIZE); // Set the camera's boundaries to the size of the world
-        this.Camera.scrollX = GAMESIZE/2;
-        this.Camera.scrollY = GAMESIZE;
+        this.Camera.centerOn(GAMESIZE/2,GAMESIZE);
         //console.log('this.Scene.input.keyboard',this.Scene.input.keyboard);
         // Enable cursor keys for camera movement
         this.cursors = this.Scene.input.keyboard.createCursorKeys();
