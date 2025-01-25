@@ -1,16 +1,15 @@
 
 export class Bubble extends Phaser.GameObjects.Image {
     Scene;
-    SpawnSpeed = 5;
-
+    id;
+    value;
     constructor (scene, x, y)
     {
         super(scene, x, y, 'bubble');
         this.Scene = scene;
         this.setTexture('bubble');
         this.setPosition(x, y);
-        console.log('spawner',this);
-        this.setOrigin(0.5,1);
+        console.log('bubble',this);
     }
     
     static staticPreload(scene)
@@ -19,10 +18,11 @@ export class Bubble extends Phaser.GameObjects.Image {
     }
 
     create() {
-        //this.Scene.add.tileSprite(0, 0, GAMESIZE, GAMESIZE, 'background').setOrigin(0, 0);
+        
     }
 
-    update() {
-
+    preUpdate(delta, time) {
+        //super.preUpdate(delta, time);
+        //console.log('bubble updating', this.id,this.value);
     }
 }
