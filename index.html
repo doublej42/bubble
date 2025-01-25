@@ -1,39 +1,57 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-
 <head>
-    <script src="https://pixijs.download/release/pixi.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser-arcade-physics.min.js"></script>
 </head>
-
 <body>
-    <h1>Hello PixiJS v3</h1>
-    <script type="module">
-        const app = new PIXI.Application();
-        await app.init({ width: 640, height: 360 });
 
-        document.body.appendChild(app.canvas);
+    <script>
+    class Example extends Phaser.Scene
+    {
+        preload ()
+        {
+            this.load.setBaseURL('https://labs.phaser.io');
 
-        // load the PNG asynchronously
-        await PIXI.Assets.load('bubble.png');
-        let sprite = PIXI.Sprite.from('bubble.png');
-        sprite.scale = 0.1;
-        app.stage.addChild(sprite);
+            this.load.image('sky', 'assets/skies/space3.png');
+            this.load.image('logo', 'assets/sprites/phaser3-logo.png');
+            this.load.image('red', 'assets/particles/red.png');
+        }
 
-        // Add a variable to count up the seconds our demo has been running
-        let elapsed = 0.0;
-        // Tell our application's ticker to run a new callback every frame, passing
-        // in the amount of time that has passed since the last tick
-        app.ticker.add((ticker) => {
-            // Add the time to our total elapsed time
-            elapsed += ticker.deltaTime;
-            // Update the sprite's X position based on the cosine of our elapsed time.  We divide
-            // by 50 to slow the animation down a bit...
-            sprite.x = 100.0 + Math.cos(elapsed / 50.0) * 100.0;
-        });
+        create ()
+        {
+            this.add.image(400, 300, 'sky');
+
+            const particles = this.add.particles(0, 0, 'red', {
+                speed: 100,
+                scale: { start: 1, end: 0 },
+                blendMode: 'ADD'
+            });
+
+            const logo = this.physics.add.image(400, 100, 'logo');
+
+            logo.setVelocity(100, 200);
+            logo.setBounce(1, 1);
+            logo.setCollideWorldBounds(true);
+
+            particles.startFollow(logo);
+        }
+    }
+
+    const config = {
+        type: Phaser.AUTO,
+        width: 800,
+        height: 600,
+        scene: Example,
+        physics: {
+            default: 'arcade',
+            arcade: {
+                gravity: { y: 200 }
+            }
+        }
+    };
+
+    const game = new Phaser.Game(config);
     </script>
 
-
-
 </body>
-
 </html>
