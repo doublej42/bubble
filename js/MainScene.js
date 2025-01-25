@@ -1,4 +1,5 @@
-import {Playfield} from "./mech/PlayField.js"
+import {PlayField} from "./mech/PlayField.js"
+import {Spawner} from './mech/Spawner.js';
 
 export class MainScene extends Phaser.Scene {
     camera;
@@ -6,31 +7,20 @@ export class MainScene extends Phaser.Scene {
     playfield;
     init() {
         // Instantiate the Playfield and pass the current scene as context
-        this.playfield = new Playfield(this);
+        this.playfield = new PlayField(this);
     }
     preload() {
         console.log('preload MainScene',this);
         this.playfield.preload();
-        this.load.image('logo', 'images/bubble.png');
-        this.load.image('red', 'images/red.png');
+        Spawner.staticPreload(this);
     }
 
     create() {
         this.playfield.create();
-        
-        const particles = this.add.particles(0, 0, 'red', {
-            speed: 100,
-            scale: { start: 1, end: 0 },
-            blendMode: 'ADD'
-        });
-
-        const logo = this.physics.add.image(400, 100, 'logo');
-
-        logo.setVelocity(100, 200);
-        logo.setBounce(1, 1);
-        logo.setCollideWorldBounds(true);
-
-        particles.startFollow(logo);
+        var bounds = this.cameras.main.getBounds();
+        var middle = bounds.width/2;
+        var bottom = bounds.height;
+        this.add.existing(new Spawner(this,middle,bottom));
     }
 
     update() {
