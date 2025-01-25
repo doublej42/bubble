@@ -37,9 +37,8 @@ export class Spawner extends Phaser.GameObjects.Image {
         {
             this.countdown = this.spawnSpeed;
             console.log('spawning bubble');
-            var bubble = new Bubble(this.Scene,this.x,this.y-(this.height/2));
+            var bubble = new Bubble(this.Scene,this.x,this.y-(this.height/2),2);
             bubble.id = this.bubbleCount++;
-            bubble.value = 2;
             bubble.addToUpdateList();
             this.bubbles.add(bubble);
             this.scene.add.existing(bubble);

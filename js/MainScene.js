@@ -13,8 +13,6 @@ export class MainScene extends Phaser.Scene {
         console.log('preload MainScene',this);
         this.playfield.preload();
         Spawner.staticPreload(this);
-        //this.load.image('logo', 'images/bubble.png');
-        //this.load.image('red', 'images/red.png');
     }
 
     create() {

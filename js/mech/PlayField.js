@@ -1,4 +1,4 @@
-const GAMESIZE = 1000;
+const GAMESIZE = 10000;
 export class PlayField {
     Scene;
     Cursors;
@@ -11,7 +11,7 @@ export class PlayField {
     preload()
     {
         console.log('preload', this.Scene)
-        this.Scene.load.image('background', 'images/MexicanTiles-13.jpg')
+        this.Scene.load.image('background', 'images/Pastel-Rainbow-17-Lemon-Paper-Lab.jpg')
     }
 
     create() {
