@@ -4,6 +4,7 @@ export class MainScene extends Phaser.Scene {
     camera;
     cursors;
     playfield;
+
     init() {
         // Instantiate the Playfield and pass the current scene as context
         this.playfield = new Playfield(this);
@@ -34,11 +35,11 @@ export class MainScene extends Phaser.Scene {
         logo.setCollideWorldBounds(true);
 
         particles.startFollow(logo);
+        this.createHUD();
     }
 
     update() {
         this.playfield.update();
-        this.createHUD();
     }
 
     createHUD() {
@@ -48,7 +49,9 @@ export class MainScene extends Phaser.Scene {
         const padding = 30;
 
         // Create HUD container that stays fixed on the screen
-        const hudContainer = this.add.container(0, 0).setScrollFactor(0);
+        const hudContainer = this.add.container(0, 0)
+            .setScrollFactor(0)
+            ;
     
         // HUD background rectangle
         const hudBg = this.add.rectangle(0, 0, hudWidth, hudHeight, 0xffffff, 0.5).setOrigin(0, 0);
@@ -61,12 +64,17 @@ export class MainScene extends Phaser.Scene {
         hudContainer.add(rightFanText);
     
         // Add draggable fan
-        const rightFanIcon = this.add.image(40, hudHeight - 80, 'rightFan').setScale(0.5).setInteractive();
+        const rightFanIconStart = {x: 40, y: hudHeight - 80}
+        const rightFanIcon = this.add.image(rightFanIconStart.x, rightFanIconStart.y, 'rightFan')
+            .setScale(0.5)
+            .setInteractive()
+            .setScrollFactor(0)
+            ;
         hudContainer.add(rightFanIcon);
     
         // Make the tile draggable
         this.input.setDraggable(rightFanIcon);
-    
+
         rightFanIcon.on('drag', (pointer, dragX, dragY) => {
             rightFanIcon.x = dragX;
             rightFanIcon.y = dragY;
@@ -74,15 +82,20 @@ export class MainScene extends Phaser.Scene {
     
         rightFanIcon.on('dragend', (pointer) => {
             // If dragged outside HUD, place tile at drop location
-            if (rightFanIcon.y > 100) { 
+            if (rightFanIcon.x > 100) { 
                 // Create a new tile in the world where dropped
-                const newTile = this.add.image(pointer.worldX, pointer.worldY, 'background').setOrigin(0, 0);
-                newTile.setInteractive();
-                this.input.setDraggable(newTile);
+                const newRightFanIcon = this.add.image(pointer.worldX-55, pointer.worldY-35, 'rightFan')
+                    .setScale(0.5)
+                    .setOrigin(0, 0)
+                    .setInteractive()
+                    .setScrollFactor(1)
+                    ;
+                this.input.setDraggable(newRightFanIcon);
             }
+
             // Reset the HUD tile to its original position
-            rightFanIcon.x = 200;
-            rightFanIcon.y = 50;
+            rightFanIcon.x = rightFanIconStart.x;
+            rightFanIcon.y = rightFanIconStart.y;
         });
 
         // HUD text to indicate item creation
