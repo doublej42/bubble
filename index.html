@@ -32,7 +32,6 @@
                 
                 // Enable cursor keys for camera movement
                 this.cursors = this.input.keyboard.createCursorKeys();
-
                 
                 const particles = this.add.particles(0, 0, 'red', {
                     speed: 100,
@@ -47,6 +46,48 @@
                 logo.setCollideWorldBounds(true);
 
                 particles.startFollow(logo);
+
+                const hudContainer = this.add.container(0, 0).setScrollFactor(0);
+
+                // Add a background rectangle for the HUD
+                const hudBg = this.add.rectangle(0, 0, 800, 100, 0x000000, 0.5).setOrigin(0, 0);
+                hudContainer.add(hudBg);
+
+                // Add HUD text
+                const hudText = this.add.text(10, 10, "Buy/Create Items", {
+                    font: '18px Arial',
+                    fill: '#ffffff'
+                });
+                hudContainer.add(hudText);
+
+                // Add a draggable tile image to the HUD
+                const tileIcon = this.add.image(200, 50, 'background').setInteractive();
+                tileIcon.setScale(0.5); // Scale it down if needed for HUD
+                hudContainer.add(tileIcon);
+
+                // Enable drag on the tile
+                this.input.setDraggable(tileIcon);
+
+                // Track the tile being dragged
+                tileIcon.on('drag', (pointer, dragX, dragY) => {
+                    tileIcon.x = dragX;
+                    tileIcon.y = dragY;
+                });
+
+                // Place tile in the world when released
+                tileIcon.on('dragend', (pointer) => {
+                    // If released outside the HUD, place the tile
+                    if (tileIcon.y > 100) {  // If dragged out of the HUD area
+                        // Place a new tile at the drop location
+                        const newTile = this.add.image(pointer.worldX, pointer.worldY, 'background').setOrigin(0, 0);
+                        newTile.setInteractive();
+                        this.input.setDraggable(newTile); // New tiles can also be dragged
+                    }
+
+                    // Reset the HUD tile back to its original position
+                    tileIcon.x = 200;
+                    tileIcon.y = 50;
+                });
             }
 
             update() {
