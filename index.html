@@ -3,89 +3,10 @@
 
 <head>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser-arcade-physics.min.js"></script>
+    <script type="module" src="js/Game.js"></script>
 </head>
 
 <body>
-
-    <script>
-        class GamePlay extends Phaser.Scene {
-            camera;
-            cursors;
-
-            preload() {
-                // this.load.setBaseURL('https://labs.phaser.io');
-
-                // this.load.image('sky', 'assets/skies/space3.png');
-                // this.load.image('logo', 'assets/sprites/phaser3-logo.png');
-                // this.load.image('red', 'assets/particles/red.png');
-                this.load.image('background', 'images/tile.png')
-                this.load.image('logo', 'images/bubble.png');
-                this.load.image('red', 'images/red.png');
-            }
-
-            create() {
-                var tileSprite = this.add.tileSprite(0, 0, 10000, 10000, 'background').setOrigin(0, 0);
-
-                // Set up the camera
-                this.camera = this.cameras.main;
-                this.camera.setBounds(0, 0, 10000, 10000); // Set the camera's boundaries to the size of the world
-                
-                // Enable cursor keys for camera movement
-                this.cursors = this.input.keyboard.createCursorKeys();
-
-                
-                const particles = this.add.particles(0, 0, 'red', {
-                    speed: 100,
-                    scale: { start: 1, end: 0 },
-                    blendMode: 'ADD'
-                });
-
-                const logo = this.physics.add.image(400, 100, 'logo');
-
-                logo.setVelocity(100, 200);
-                logo.setBounce(1, 1);
-                logo.setCollideWorldBounds(true);
-
-                particles.startFollow(logo);
-            }
-
-            update() {
-                const scrollSpeed = 10; // Adjust the camera movement speed as needed
-                
-                var cursors = this.cursors;
-                console.log(cursors);
-                // Move the camera based on cursor input
-                if (cursors.left.isDown) {
-                    this.camera.scrollX -= scrollSpeed;
-                }
-                if (cursors.right.isDown) {
-                    this.camera.scrollX += scrollSpeed;
-                }
-                if (cursors.up.isDown) {
-                    this.camera.scrollY -= scrollSpeed;
-                }
-                if (cursors.down.isDown) {
-                    this.camera.scrollY += scrollSpeed;
-                }
-            }
-        }
-
-        const config = {
-            type: Phaser.AUTO,
-            width: 800,
-            height: 600,
-            scene: GamePlay,
-            physics: {
-                default: 'arcade',
-                arcade: {
-                    gravity: { y: 200 }
-                }
-            }
-        };
-
-        const game = new Phaser.Game(config);
-    </script>
-
 </body>
 
 </html>
