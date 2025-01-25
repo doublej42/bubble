@@ -8,33 +8,32 @@
 <body>
 
     <script>
-        class Example extends Phaser.Scene {
+        class GamePlay extends Phaser.Scene {
+            camera;
+            cursors;
+
             preload() {
                 // this.load.setBaseURL('https://labs.phaser.io');
 
                 // this.load.image('sky', 'assets/skies/space3.png');
                 // this.load.image('logo', 'assets/sprites/phaser3-logo.png');
                 // this.load.image('red', 'assets/particles/red.png');
-                this.load.image('background', 'images/tile.jpg')
+                this.load.image('background', 'images/tile.png')
                 this.load.image('logo', 'images/bubble.png');
                 this.load.image('red', 'images/red.png');
             }
 
             create() {
-                tileSprite = this.add.tileSprite(0, 0, 10000, 10000, 'background').setOrigin(0, 0);
-
-                // Enable cursor keys for movement
-                cursors = this.input.keyboard.createCursorKeys();
+                var tileSprite = this.add.tileSprite(0, 0, 10000, 10000, 'background').setOrigin(0, 0);
 
                 // Set up the camera
-                camera = this.cameras.main;
-                camera.setBounds(0, 0, 10000, 10000); // Set the camera's boundaries to the size of the world
-
+                this.camera = this.cameras.main;
+                this.camera.setBounds(0, 0, 10000, 10000); // Set the camera's boundaries to the size of the world
+                
                 // Enable cursor keys for camera movement
-                cursors = this.input.keyboard.createCursorKeys();
+                this.cursors = this.input.keyboard.createCursorKeys();
 
-                //this.add.image(400, 300, 'sky');
-
+                
                 const particles = this.add.particles(0, 0, 'red', {
                     speed: 100,
                     scale: { start: 1, end: 0 },
@@ -52,32 +51,30 @@
 
             update() {
                 const scrollSpeed = 10; // Adjust the camera movement speed as needed
-
+                
+                var cursors = this.cursors;
+                console.log(cursors);
                 // Move the camera based on cursor input
                 if (cursors.left.isDown) {
-                    camera.scrollX -= scrollSpeed;
+                    this.camera.scrollX -= scrollSpeed;
                 }
                 if (cursors.right.isDown) {
-                    camera.scrollX += scrollSpeed;
+                    this.camera.scrollX += scrollSpeed;
                 }
                 if (cursors.up.isDown) {
-                    camera.scrollY -= scrollSpeed;
+                    this.camera.scrollY -= scrollSpeed;
                 }
                 if (cursors.down.isDown) {
-                    camera.scrollY += scrollSpeed;
+                    this.camera.scrollY += scrollSpeed;
                 }
             }
         }
 
         const config = {
             type: Phaser.AUTO,
-            width: window.innerWidth,
-            height: window.innerHeight,
-            scale: {
-                mode: Phaser.Scale.RESIZE, // Resize automatically to fit the window
-                autoCenter: Phaser.Scale.CENTER_BOTH, // Center the game in the window
-            },
-            scene: Example,
+            width: 800,
+            height: 600,
+            scene: GamePlay,
             physics: {
                 default: 'arcade',
                 arcade: {
