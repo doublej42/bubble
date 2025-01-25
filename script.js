@@ -24,6 +24,23 @@ window.onload = function () {
     var tileGroup;
     var tilesArray = [];
     var gridSize = 1000; // Define a large world size
+    var graphics; // Declare graphics variable to reuse
+
+    function drawGrid() {
+        graphics.clear(); // Clear previous frame
+        graphics.lineStyle(1, 0xaaaaaa);
+
+        // Calculate camera position offset
+        var cameraX = this.cameras.main.scrollX;
+        var cameraY = this.cameras.main.scrollY;
+
+        // Draw grid based on camera position
+        for (var x = cameraX % tileSize; x < gridSize + tileSize; x += tileSize) {
+            for (var y = cameraY % tileSize; y < gridSize + tileSize; y += tileSize) {
+                graphics.strokeRect(x, y, tileSize, tileSize);
+            }
+        }
+    }
 
     function preload() {
         this.load.image('tile', 'assets/tile.png');
@@ -31,9 +48,7 @@ window.onload = function () {
 
     function create() {
         // Create a world-sized grid
-        var graphics = this.add.graphics({
-            lineStyle: { width: 1, color: 0xaaaaaa },
-        });
+        graphics = this.add.graphics();
 
         // Draw a grid to visualize the world
         for (var x = -gridSize; x < gridSize; x += tileSize) {
@@ -53,6 +68,8 @@ window.onload = function () {
     }
 
     function update() {
+        drawGrid.call(this);
+
         // Move camera with WASD or Arrow keys
         if (cursors.left.isDown) {
             this.cameras.main.scrollX -= cameraSpeed;
