@@ -12,7 +12,7 @@ export class Playfield {
     preload()
     {
         console.log('preload', this.Scene)
-        this.Scene.load.image('background', 'images/tile.png')
+        this.Scene.load.image('background', 'images/MexicanTiles-13.jpg')
     }
 
     create() {
@@ -21,13 +21,15 @@ export class Playfield {
         // Set up the camera
         this.Camera = this.Scene.cameras.main;
         this.Camera.setBounds(0, 0, GAMESIZE, GAMESIZE); // Set the camera's boundaries to the size of the world
+        this.Camera.scrollX = GAMESIZE/2;
+        this.Camera.scrollY = GAMESIZE;
         //console.log('this.Scene.input.keyboard',this.Scene.input.keyboard);
         // Enable cursor keys for camera movement
         this.cursors = this.Scene.input.keyboard.createCursorKeys();
     }
 
     update() {
-        const scrollSpeed = 10; // Adjust the camera movement speed as needed
+        const scrollSpeed = 3; // Adjust the camera movement speed as needed
         
         var cursors = this.cursors;
         //console.log()
@@ -46,7 +48,4 @@ export class Playfield {
             camera.scrollY += scrollSpeed;
         }
     }
-
-    
-
 }
