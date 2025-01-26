@@ -16,6 +16,7 @@ export class MainScene extends Phaser.Scene {
         this.playfield.preload();
         this.load.image('rightFan', 'images/rightFan.png');
         this.load.image('multHud', 'images/multHud.png');
+        this.load.spritesheet('fanAnim', 'images/fanAnim.png', { frameWidth: 225, frameHeight: 225 });
         Spawner.staticPreload(this);
     }
 
@@ -53,13 +54,25 @@ export class MainScene extends Phaser.Scene {
         });
         hudContainer.add(rightFanText);
     
-        // Add draggable fan
-        const rightFanIconStart = {x: 40, y: hudHeight - 80}
-        const rightFanIcon = this.add.image(rightFanIconStart.x, rightFanIconStart.y, 'rightFan')
+        // create an animation for the fan icon
+        this.anims.create({
+            key: 'fanSpin',
+            frames: this.anims.generateFrameNumbers('fanAnim', { start: 1, end: 3 }),
+            frameRate: 12,
+            repeat: -1
+        });
+
+        // add a right fan icon to the hud
+        const rightFanIconStartPos = {x: 40, y: hudHeight - 80};
+        const rightFanIcon = this.add.sprite(rightFanIconStartPos.x, rightFanIconStartPos.y, 'fanAnim')
             .setScale(0.5)
             .setInteractive()
             .setScrollFactor(0)
             ;
+
+        // rightFanIcon.anims.play('fanSpin');
+
+        // add the icon to the container
         hudContainer.add(rightFanIcon);
     
         // Make the tile draggable
@@ -74,11 +87,12 @@ export class MainScene extends Phaser.Scene {
             // If dragged outside HUD, place tile at drop location
             if (rightFanIcon.x > 100) { 
                 // Create a new tile in the world where dropped
-                const newRightFanIcon = this.add.image(pointer.worldX-55, pointer.worldY-35, 'rightFan')
+                const newRightFanIcon = this.add.sprite(pointer.worldX-55, pointer.worldY-35, 'fanAnim')
                     .setScale(0.5)
                     .setOrigin(0, 0)
                     .setInteractive()
                     .setScrollFactor(1)
+                    .anims.play('fanSpin')
                     ;
                 this.input.setDraggable(newRightFanIcon);
 
@@ -90,8 +104,8 @@ export class MainScene extends Phaser.Scene {
             }
 
             // Reset the HUD tile to its original position
-            rightFanIcon.x = rightFanIconStart.x;
-            rightFanIcon.y = rightFanIconStart.y;
+            rightFanIcon.x = rightFanIconStartPos.x;
+            rightFanIcon.y = rightFanIconStartPos.y;
         });
 
         // HUD text to indicate item creation
@@ -103,7 +117,8 @@ export class MainScene extends Phaser.Scene {
         hudContainer.add(leftFanText);
 
         // add a left fan icon to the hud
-        const leftFanIcon = this.add.image(40, hudHeight - 220, 'rightFan')
+        const leftFanIconStartPos = {x: 40, y: hudHeight - 220};
+        const leftFanIcon = this.add.sprite(leftFanIconStartPos.x, leftFanIconStartPos.y, 'fanAnim')
             .setScale(0.5)
             .setInteractive()
             .setScrollFactor(0)
@@ -121,11 +136,12 @@ export class MainScene extends Phaser.Scene {
 
         leftFanIcon.on('dragend', (pointer) => {
             if (leftFanIcon.x > 100) {
-                const newLeftFanIcon = this.add.image(pointer.worldX - 55, pointer.worldY - 35, 'rightFan')
+                const newLeftFanIcon = this.add.sprite(pointer.worldX - 55, pointer.worldY - 35, 'fanAnim')
                     .setScale(0.5)
                     .setOrigin(0, 0)
                     .setInteractive()
                     .setScrollFactor(1)
+                    .anims.play('fanSpin')
                     ;
                 newLeftFanIcon.flipX = true;
                 this.input.setDraggable(newLeftFanIcon);
@@ -136,8 +152,8 @@ export class MainScene extends Phaser.Scene {
                 });
             }
 
-            leftFanIcon.x = 40;
-            leftFanIcon.y = hudHeight - 220;
+            leftFanIcon.x = leftFanIconStartPos.x;
+            leftFanIcon.y = leftFanIconStartPos.y;
         });
 
         // add multiplier text
