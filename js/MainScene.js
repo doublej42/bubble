@@ -40,7 +40,7 @@ export class MainScene extends Phaser.Scene {
         var combiners = this.physics.add.staticGroup();
         this.bubbles = this.physics.add.group();
 
-        combiners.add(new Combiner(this,middle+50,bottom-500,2,3),true);
+        combiners.add(new Combiner(this,middle-100,bottom-700,2,3),true);
         this.physics.add.collider(this.bubbles, combiners,Combiner.handleCollision);
 
         this.multipliers = this.physics.add.group({
