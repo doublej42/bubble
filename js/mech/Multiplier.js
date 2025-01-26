@@ -26,7 +26,7 @@ export class Multiplier extends Phaser.GameObjects.Container {
     Scene;
 
     text;
-    spawnSpeed = 2000;
+    spawnSpeed = 1100;
     countdown = 0;
     bubbleCount = 0;
     baseSprite;

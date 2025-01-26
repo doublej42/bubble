@@ -55,7 +55,7 @@ export class Combiner extends Phaser.GameObjects.Rectangle {
 
             this.text = this.Scene.add.text(this.x, this.y, "Inactive", {
                 color: randomColor,
-                fontSize: '17px',
+                fontSize: '16px',
                 fontFamily: 'GroovyBubble',
                 shadow: {
                     offsetX: 0,
@@ -88,7 +88,7 @@ export class Combiner extends Phaser.GameObjects.Rectangle {
         }
         else {
             var needed = this.a * this.b;
-            this.text.setText(`Provide Numbers that multiply to ${needed}`);
+            this.text.setText(`Provide two numbers that multiply to ${needed}`);
             this.setFillStyle(0x000000);
         }
 

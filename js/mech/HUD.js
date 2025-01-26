@@ -49,7 +49,7 @@ export class HUD {
 
         // add multiplier icon for the hud
         //const multHudIcon = scene.add.image(40, hudHeight - 340, 'multHud').setScale(0.3).setInteractive();
-        const multHudIcon = new HudMult(scene, 40, hudHeight - 420);
+        const multHudIcon = new HudMult(scene, 40, hudHeight - 340);
         hudContainer.add(multHudIcon);
 
         // add a volume slider
