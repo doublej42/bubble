@@ -20,7 +20,8 @@ export class MainScene extends Phaser.Scene {
         var bounds = this.cameras.main.getBounds();
         var middle = bounds.width/2;
         var bottom = bounds.height;
-        this.add.existing(new Spawner(this,middle,bottom));
+        this.add.existing(new Spawner(this,middle,bottom,2));
+        this.add.existing(new Spawner(this,middle+100,bottom,3));
     }
 
     update() {

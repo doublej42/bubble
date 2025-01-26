@@ -6,7 +6,8 @@ export class Spawner extends Phaser.GameObjects.Image {
     countdown = 0;
     bubbleCount = 0;
     bubbles;
-    constructor (scene, x, y)
+    value;
+    constructor (scene, x, y, value)
     {
         super(scene, x, y, 'spawner');
         this.Scene = scene;
@@ -18,6 +19,7 @@ export class Spawner extends Phaser.GameObjects.Image {
             bounceX: 1,
             bounceY: 1
         });
+        this.value = value;
     }
     
     static staticPreload(scene)
@@ -37,7 +39,7 @@ export class Spawner extends Phaser.GameObjects.Image {
         {
             this.countdown = this.spawnSpeed;
             console.log('spawning bubble');
-            var bubble = new Bubble(this.Scene,this.x,this.y-(this.height/2),2);
+            var bubble = new Bubble(this.Scene,this.x,this.y-(this.height/2),this.value);
             bubble.id = this.bubbleCount++;
             bubble.addToUpdateList();
             this.bubbles.add(bubble);
