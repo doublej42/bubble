@@ -17,6 +17,7 @@ export class Combiner extends Phaser.GameObjects.Rectangle {
     initialized = false;
     //group;
     Scene;
+    text;
     constructor(scene, x, y, a, b) {
         console.log('Combiner constructor');
 
@@ -29,7 +30,7 @@ export class Combiner extends Phaser.GameObjects.Rectangle {
     }
 
     static handleCollision(object1, object2) {
-        console.log('handleCollision', object1, object2);
+        //console.log('handleCollision', object1, object2);
         if (object1.value === object2.a) {
             object2.aStorage++;
         }
@@ -45,8 +46,10 @@ export class Combiner extends Phaser.GameObjects.Rectangle {
             this.initialized = true;
             const randomColor = colourChoices[Math.floor(Math.random() * colourChoices.length)];
             this.Scene.add.existing(new Phaser.GameObjects.Rectangle(this.scene, this.x, this.y, 290, 90, randomColor));
-            this.Scene.add.existing(new Text(this.Scene, this.x, this.y, this.a, {
-                color: '#000',
+            
+
+            this.text = this.Scene.add.text(this.x, this.y, "Inactive", {
+                color: randomColor,
                 fontSize: '19px',
                 fontFamily: 'GroovyBubble',
                 shadow: {
@@ -57,9 +60,52 @@ export class Combiner extends Phaser.GameObjects.Rectangle {
                     stroke: true,
                     fill: true
                 },
-            }));
+            });
+            
 
+
+            // this.Scene.add.text(this.x-50, this.y, this.a, {
+            //     color: randomColor,
+            //     fontSize: '19px',
+            //     fontFamily: 'GroovyBubble',
+            //     shadow: {
+            //         offsetX: 0,
+            //         offsetY: 0,
+            //         color: '#FFF',
+            //         blur: 1,
+            //         stroke: true,
+            //         fill: true
+            //     },
+            // });
+
+            // this.Scene.add.text(this.x+50, this.y, this.b, {
+            //     color: randomColor,
+            //     fontSize: '19px',
+            //     fontFamily: 'GroovyBubble',
+            //     shadow: {
+            //         offsetX: 0,
+            //         offsetY: 0,
+            //         color: '#FFF',
+            //         blur: 1,
+            //         stroke: true,
+            //         fill: true
+            //     },
+            // });
         }
+
+        if (this.aStorage > 0 && this.bStorage > 0)
+        {
+            this.text.setText("Active");
+            this.setFillStyle(0x00FF00);
+        }
+        else
+        {
+            var needed = this.a*this.b;
+            this.text.setText(`Provide Numbers that multiply to ${needed}`);
+            this.setFillStyle(0x000000);
+        }
+        Phaser.Display.Align.In.Center(this.text, this);
+        
 
     }
 

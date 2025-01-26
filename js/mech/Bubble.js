@@ -51,7 +51,7 @@ export class Bubble extends Phaser.GameObjects.Image {
             });
             //this.text.once('destroy',this.destroyChildren , this);
             this.once('destroy', function () {
-                console.log('destroyChildren',this.text);
+                //console.log('destroyChildren',this.text);
                 this.text.destroy();
               }, this);
         }
