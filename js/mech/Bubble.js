@@ -19,12 +19,9 @@ export class Bubble extends Phaser.GameObjects.Image {
         super(scene, x, y, 'bubble');
         this.Scene = scene;
         this.setTexture('bubble');
-        this.setPosition(x, y);
         this.value = value;
-        console.log('bubble',this);
+        //console.log('bubble',this);
         //https://docs.phaser.io/phaser/concepts/gameobjects/text
-        
-        
     }
     
     static staticPreload(scene)
@@ -32,11 +29,13 @@ export class Bubble extends Phaser.GameObjects.Image {
         scene.load.image('bubble', 'images/bubble.png');
     }
     
+
+
     preUpdate(delta, time) {
         if (this.text === null)
         {
             const randomColor = colourChoices[Math.floor(Math.random() * colourChoices.length)];
-            console.log('bubble preupdate first',randomColor);
+            //console.log('bubble preupdate first',randomColor);
             this.text = this.Scene.add.text(this.x, this.y-10, this.value, {
                 color: randomColor,
                 fontSize: '19px',
@@ -50,9 +49,15 @@ export class Bubble extends Phaser.GameObjects.Image {
                     fill: true
                 },
             });
+            //this.text.once('destroy',this.destroyChildren , this);
+            this.once('destroy', function () {
+                //console.log('destroyChildren',this.text);
+                this.text.destroy();
+              }, this);
         }
         this.text.setPosition(this.x-5,this.y-10);
         //super.preUpdate(delta, time);
         //console.log('bubble updating', this.id,this.value);
     }
+
 }
