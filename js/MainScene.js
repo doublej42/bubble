@@ -1,5 +1,6 @@
 import {PlayField} from "./mech/PlayField.js"
 import {Spawner} from './mech/Spawner.js';
+import {Fan} from './mech/Fan.js';
 import {Combiner} from './mech/Combiner.js'
 
 export class MainScene extends Phaser.Scene {
@@ -15,11 +16,12 @@ export class MainScene extends Phaser.Scene {
     preload() {
         console.log('preload MainScene',this);
         this.playfield.preload();
-        this.load.image('rightFan', 'images/rightFan.png');
         this.load.image('multHud', 'images/multHud.png');
         this.load.image('trash', 'images/trash.png');
         this.load.spritesheet('fanAnim', 'images/fanAnim.png', { frameWidth: 225, frameHeight: 225 });
+
         Spawner.staticPreload(this);
+        Fan.staticPreload(this);
     }
 
     create() {
@@ -45,49 +47,41 @@ export class MainScene extends Phaser.Scene {
     }
 
     createHUD() {
+        const scene = this;
         const hudWidth = 100;
         const hudHeight = 600; // TODO: update this via game config
         const leftPadding = 10;
         const padding = 30;
 
         // Create HUD container that stays fixed on the screen
-        const hudContainer = this.add.container(0, 0)
+        const hudContainer = scene.add.container(0, 0)
             .setScrollFactor(0)
             ;
     
         // HUD background rectangle
-        const hudBg = this.add.rectangle(0, 0, hudWidth, hudHeight, 0xffffff, 0.5).setOrigin(0, 0);
+        const hudBg = scene.add.rectangle(0, 0, hudWidth, hudHeight, 0xffffff, 0.5).setOrigin(0, 0);
         hudContainer.add(hudBg);
 
-        const rightFanText = this.add.text(leftPadding, hudHeight - 30, "right fan", {
+        const rightFanText = scene.add.text(leftPadding, hudHeight - 30, "right fan", {
             font: '18px Arial',
             fill: '#000000'
         });
         hudContainer.add(rightFanText);
-    
-        // create an animation for the fan icon
-        this.anims.create({
-            key: 'fanSpin',
-            frames: this.anims.generateFrameNumbers('fanAnim', { start: 1, end: 3 }),
-            frameRate: 12,
-            repeat: -1
-        });
 
         // add a right fan icon to the hud
         const rightFanIconStartPos = {x: 40, y: hudHeight - 80};
-        const rightFanIcon = this.add.sprite(rightFanIconStartPos.x, rightFanIconStartPos.y, 'fanAnim')
+        const rightFanIcon = scene.add.sprite(rightFanIconStartPos.x, rightFanIconStartPos.y, 'fanAnim')
             .setScale(0.5)
             .setInteractive()
             .setScrollFactor(0)
             ;
-
-        // rightFanIcon.anims.play('fanSpin');
+        rightFanIcon.anims.play('fanSpin');
 
         // add the icon to the container
         hudContainer.add(rightFanIcon);
     
         // Make the tile draggable
-        this.input.setDraggable(rightFanIcon);
+        scene.input.setDraggable(rightFanIcon);
 
         rightFanIcon.on('drag', (pointer, dragX, dragY) => {
             rightFanIcon.x = dragX;
@@ -96,42 +90,9 @@ export class MainScene extends Phaser.Scene {
     
         rightFanIcon.on('dragend', (pointer) => {
             // If dragged outside HUD, place tile at drop location
-            if (rightFanIcon.x > 100) { 
+            if (rightFanIcon.x > 100) {
                 // Create a new tile in the world where dropped
-                const newRightFanIcon = this.add.sprite(pointer.worldX-55, pointer.worldY-35, 'fanAnim')
-                    .setScale(0.5)
-                    .setOrigin(0, 0)
-                    .setInteractive()
-                    .setScrollFactor(1)
-                    .anims.play('fanSpin')
-                    ;
-                this.input.setDraggable(newRightFanIcon);
-
-                let hoveredHud = false;
-
-                // Add drag event listeners to the new icon
-                newRightFanIcon.on('drag', (pointer, dragX, dragY) => {
-                    newRightFanIcon.x = dragX;
-                    newRightFanIcon.y = dragY;
-
-                    // if it is over the hud, turn off the animation and change the texture to trash
-                    if (newRightFanIcon.x < hudWidth - 50 + this.cameras.main.scrollX) {
-                        newRightFanIcon.setTexture('trash');
-                        newRightFanIcon.anims.stop();
-                        hoveredHud = true;
-                    } else {
-                        newRightFanIcon.setTexture('fanAnim');
-                        newRightFanIcon.anims.play('fanSpin');
-                        hoveredHud = false;
-                    }
-                });
-
-                // if the icon is dragged off the hud, destroy it
-                newRightFanIcon.on('dragend', (pointer) => {
-                    if (hoveredHud) {
-                        newRightFanIcon.destroy();
-                    }
-                });
+                this.add.existing(new Fan(scene, pointer.worldX, pointer.worldY+20, 'right', true));
             }
 
             // Reset the HUD tile to its original position
@@ -167,40 +128,7 @@ export class MainScene extends Phaser.Scene {
 
         leftFanIcon.on('dragend', (pointer) => {
             if (leftFanIcon.x > 100) {
-                const newLeftFanIcon = this.add.sprite(pointer.worldX - 55, pointer.worldY - 35, 'fanAnim')
-                    .setScale(0.5)
-                    .setOrigin(0, 0)
-                    .setInteractive()
-                    .setScrollFactor(1)
-                    .anims.play('fanSpin')
-                    ;
-                newLeftFanIcon.flipX = true;
-                this.input.setDraggable(newLeftFanIcon);
-
-                let hoveredHud = false;
-
-                newLeftFanIcon.on('drag', (pointer, dragX, dragY) => {
-                    newLeftFanIcon.x = dragX;
-                    newLeftFanIcon.y = dragY;
-
-                    // if it is over the hud, turn off the animation and change the texture to trash
-                    if (newLeftFanIcon.x < hudWidth - 50 + this.cameras.main.scrollX) {
-                        newLeftFanIcon.setTexture('trash');
-                        newLeftFanIcon.anims.stop();
-                        hoveredHud = true;
-                    } else {
-                        newLeftFanIcon.setTexture('fanAnim');
-                        newLeftFanIcon.anims.play('fanSpin');
-                        hoveredHud = false;
-                    }
-                });
-
-                // if the icon is dragged off the hud, destroy it
-                newLeftFanIcon.on('dragend', (pointer) => {
-                    if (hoveredHud) {
-                        newLeftFanIcon.destroy();
-                    }
-                });
+                this.add.existing(new Fan(scene, pointer.worldX, pointer.worldY+20, 'left', true));
             }
 
             leftFanIcon.x = leftFanIconStartPos.x;
