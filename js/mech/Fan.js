@@ -6,14 +6,12 @@
 let hudWidth = 100;
 
 export class Fan extends Phaser.GameObjects.Sprite {
-    scene;
     direction;
     blowing;
 
     constructor (scene, x, y, direction = 'left', blowing = true)
     {
         super(scene, x, y, 'fanAnim');
-        this.scene = scene;
         this.direction = direction;
         this.blowing = blowing;
 
