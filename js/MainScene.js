@@ -81,6 +81,12 @@ export class MainScene extends Phaser.Scene {
                     .setScrollFactor(1)
                     ;
                 this.input.setDraggable(newRightFanIcon);
+
+                // Add drag event listeners to the new icon
+                newRightFanIcon.on('drag', (pointer, dragX, dragY) => {
+                    newRightFanIcon.x = dragX;
+                    newRightFanIcon.y = dragY;
+                });
             }
 
             // Reset the HUD tile to its original position
