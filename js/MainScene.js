@@ -10,6 +10,8 @@ export class MainScene extends Phaser.Scene {
     playfield;
     bubbles;
     multipliers;
+    goals;
+    hud;
     init() {
         // Instantiate the Playfield and pass the current scene as context
         this.playfield = new PlayField(this);
@@ -37,12 +39,12 @@ export class MainScene extends Phaser.Scene {
 
         this.bubbles = this.physics.add.group();
 
-        var goals = this.physics.add.staticGroup();
-        goals.add(new Goal(this,middle+50,bottom-700,6),true);
-        goals.add(new Goal(this,middle+300,bottom-1300,30),true);
+        this.goals = this.physics.add.staticGroup();
+        this.goals.add(new Goal(this,middle+50,bottom-700,6),true);
+        this.goals.add(new Goal(this,middle+300,bottom-1300,30),true);
 
 
-        this.physics.add.collider(this.bubbles, goals,Goal.handleCollision);
+        this.physics.add.collider(this.bubbles, this.goals,Goal.handleCollision);
 
         this.multipliers = this.physics.add.group({
             immovable: true,
@@ -53,11 +55,14 @@ export class MainScene extends Phaser.Scene {
         
         
         //https://github.com/phaserjs/examples/blob/00868cfbe0ce555c8e9f8ace3e3dc7d1504425ca/public/src/games/firstgame/part9.html#L57
+        this.hud = new HUD(this);
+        this.add.existing(this.hud);
 
-        this.add.existing(new HUD(this));
+       
     }
 
     update() {
         this.playfield.update();
+        this.hud.update();
     }
 }

@@ -6,7 +6,10 @@ import { HudMult } from './HudMult.js';
 import { VolumeSlider } from './VolumeSlider.js'
 
 export class HUD {
+    scoreBoard;
+    scene;
     constructor(scene) {
+        this.scene = scene;
         const hudWidth = 100;
         const hudHeight = window.innerHeight - 50;//600; // TODO: update this via game config
         const leftPadding = 10;
@@ -55,6 +58,21 @@ export class HUD {
         // add a volume slider
         const volumeSlider = new VolumeSlider(scene, 25, 20).setScrollFactor(0);
         hudContainer.add(volumeSlider);
+
+        this.scoreBoard = scene.add.text(30, 100, 'Score:\r\n0', {
+            color: "#000",
+            fontSize: '17px',
+            fontFamily: 'GroovyBubble',
+            shadow: {
+                offsetX: 0,
+                offsetY: 0,
+                color: '#FFF',
+                blur: 1,
+                stroke: true,
+                fill: true
+            },
+            align: 'center',
+        }).setScrollFactor(0);
     }
 
     static preload(scene) {
@@ -64,7 +82,11 @@ export class HUD {
         scene.load.image('trash', 'images/trash.png');
     }
 
-    preUpdate(time, delta) {
-        super.preUpdate(time, delta);
+    update() {
+        console.log(this.scene.goals);
+        const score = this.scene.goals.children.entries.filter(goal => goal.scored).length;
+       
+        //const score = 5;
+        this.scoreBoard.setText(`Score:\r\n${score}`);
     }
 }
