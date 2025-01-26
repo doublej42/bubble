@@ -67,7 +67,7 @@ export class Bubble extends Phaser.GameObjects.Image {
             const randomColor = colourChoices[Math.floor(Math.random() * colourChoices.length)];
             //console.log('bubble preupdate first',randomColor);
             this.text = this.scene.add.text(this.x, this.y-10, this.value, {
-                color: randomColor,
+                color: "#000",
                 fontSize: '19px',
                 fontFamily: 'GroovyBubble',
                 shadow: {

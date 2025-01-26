@@ -1,6 +1,6 @@
 import {PlayField} from "./mech/PlayField.js"
 import {Spawner} from './mech/Spawner.js';
-import {Combiner} from './mech/Combiner.js'
+import {Goal} from './mech/Goal.js'
 import {Multiplier} from './mech/Multiplier.js'
 import {HUD} from './mech/HUD.js'
 
@@ -23,6 +23,7 @@ export class MainScene extends Phaser.Scene {
         Spawner.staticPreload(this);
         Multiplier.staticPreload(this);
         HUD.preload(this);
+        Goal.staticPreload(this);
     }
 
     create() {
@@ -34,17 +35,14 @@ export class MainScene extends Phaser.Scene {
         this.add.existing(new Spawner(this,middle+100,bottom,3));
         this.add.existing(new Spawner(this,middle-100,bottom,5));
 
-        
-
-        var combiners = this.physics.add.staticGroup();
         this.bubbles = this.physics.add.group();
 
-        combiners.add(new Combiner(this,middle-100,bottom-700,2,3),true);
+        var goals = this.physics.add.staticGroup();
+        goals.add(new Goal(this,middle+50,bottom-700,6),true);
+        goals.add(new Goal(this,middle+300,bottom-1300,30),true);
 
-        combiners.add(new Combiner(this,middle+300,bottom-1300,6,5),true);
 
-
-        this.physics.add.collider(this.bubbles, combiners,Combiner.handleCollision);
+        this.physics.add.collider(this.bubbles, goals,Goal.handleCollision);
 
         this.multipliers = this.physics.add.group({
             immovable: true,

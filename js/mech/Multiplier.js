@@ -15,7 +15,7 @@ const colourChoices = [
 let hudWidth = 100;
 
 
-//Combines A*B
+
 export class Multiplier extends Phaser.GameObjects.Container {
     a;
     b;
@@ -38,11 +38,11 @@ export class Multiplier extends Phaser.GameObjects.Container {
         this.a = 0;
         this.b = 0;
         this.Scene = scene;
-        this.setSize(200, 100);
+        
 
         this.baseSprite = this.Scene.add.sprite(0, 0, 'multField');
         this.add(this.baseSprite);
-
+        this.setSize(this.baseSprite.width, this.baseSprite.height);
 
         this.aCapSprite = this.Scene.add.sprite(0-20, 2, 'multFieldM0');
         this.add(this.aCapSprite);
@@ -81,7 +81,7 @@ export class Multiplier extends Phaser.GameObjects.Container {
             this.b = 0;
             this.aStorage = 0;
             this.bStorage = 0;
-            console.log('drag', this.x);
+            //console.log('drag', this.x);
             // if it is over the hud, turn off the animation and change the texture to trash
             if (this.x < hudWidth + scene.cameras.main.scrollX) {
                 this.baseSprite.setTexture('trash');
