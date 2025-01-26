@@ -3,7 +3,9 @@
 // and can be destroyed by dragging it to the HUD
 
 // TODO: modularize this code so the hud could be anywhere
-let hudWidth = 100;
+const hudWidth = 100;
+const pullBehind = false; // if true, this fan causes a pull force behind it
+const fanStrength = 10000;
 
 export class Fan extends Phaser.GameObjects.Sprite {
     direction;
@@ -85,7 +87,22 @@ export class Fan extends Phaser.GameObjects.Sprite {
 
             for (const bubble of this.scene.bubbles.getChildren()) {
                 distance.copy(bubble.body.center).subtract(fanPosition);
-                force.copy(distance).setLength(50000 / distance.lengthSq()).limit(1000);
+
+                // if the bubble is too far away, don't bother calculating the force
+                if (distance.lengthSq() > 50000) {
+                    continue;
+                }
+
+                // if the bubble is behind the fan, don't bother calculating the force
+                if (!pullBehind) {
+                    if (this.direction === 'left' && distance.x > 0) {
+                        continue;
+                    } else if (this.direction === 'right' && distance.x < 0) {
+                        continue;
+                    }
+                }
+
+                force.copy(distance).setLength(fanStrength / distance.lengthSq()).limit(1000);
 
                 // Adjust the force direction based on the fan's direction
                 if (this.direction === 'left') {
