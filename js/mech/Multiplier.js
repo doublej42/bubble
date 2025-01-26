@@ -9,8 +9,14 @@ const colourChoices = [
     0xa6c3e5,
     0xa9deec
 ]
+
+
+// TODO: modularize this code so the hud could be anywhere
+let hudWidth = 100;
+
+
 //Combines A*B
-export class Multiplier extends Phaser.GameObjects.Rectangle {
+export class Multiplier extends Phaser.GameObjects.Sprite {
     a;
     b;
     aStorage = 0;
@@ -23,38 +29,55 @@ export class Multiplier extends Phaser.GameObjects.Rectangle {
     countdown = 0;
     bubbleCount = 0;
     constructor(scene, x, y) {
-        console.log('Multiplier constructor');
+        //console.log('Multiplier constructor');
 
-        super(scene, x, y, 200, 100, 0x000000);
+        super(scene, x, y,'Multiplier');
 
         this.a = 0;
         this.b = 0;
         this.Scene = scene;
-
+        this.setTexture('multField')
         this.setInteractive();
+        this.g
         scene.input.setDraggable(this);
+        let hoveredHud = false;
 
         // Add drag event listeners to the new icon
         this.on('drag', (pointer, dragX, dragY) => {
             this.x = dragX;
             this.y = dragY;
-
+            //no scooping up bubbles, empty it when moved
+            this.a = 0;
+            this.b = 0;
+            this.aStorage = 0;
+            this.bStorage = 0;
+            console.log('drag',this.x);
             // if it is over the hud, turn off the animation and change the texture to trash
             if (this.x < hudWidth + scene.cameras.main.scrollX) {
-                //this.setTexture('trash');
-                //this.anims.stop();
-                //hoveredHud = true;
+                this.setTexture('trash');
+                hoveredHud = true;
             } else {
-                //newRightFanIcon.setTexture('fanAnim');
-                //newRightFanIcon.anims.play('fanSpin');
-                //hoveredHud = false;
+                this.setTexture('multField');
+                hoveredHud = false;
             }
         });
-
+        
+        // Add drag event listeners to the new icon
+        // if the icon is dragged off the hud, destroy it
+        this.on('dragend', (pointer) => {
+            if (hoveredHud) {
+                this.destroy();
+            }
+        });
     }
+   
+    static staticPreload(scene)  {
+        scene.load.image('multField', 'images/multi/multField.png');
+    }
+    
 
     static handleCollision(object1, object2) {
-        console.log('handleCollision', object1.value, object2.a,object2.b);
+        //console.log('handleCollision', object1.value, object2.a,object2.b);
         if (object1.value === object2.a) {
             object2.aStorage++;
         }
@@ -72,7 +95,7 @@ export class Multiplier extends Phaser.GameObjects.Rectangle {
             object2.bStorage = 1;
         }
 
-        console.log('Collision', object2.aStorage, object2.bStorage);
+        //console.log('Collision', object2.aStorage, object2.bStorage);
         object1.destroy();
     }
 
@@ -80,10 +103,7 @@ export class Multiplier extends Phaser.GameObjects.Rectangle {
         if (!this.initialized) {
             this.initialized = true;
             const randomColor = colourChoices[Math.floor(Math.random() * colourChoices.length)];
-            this.Scene.add.existing(new Phaser.GameObjects.Rectangle(this.scene, this.x, this.y, 190, 90, randomColor));
-
-
-            this.text = this.Scene.add.text(this.x, this.y, "Inactive", {
+            this.text = this.Scene.add.text(this.x, this.y-50, "Inactive", {
                 color: randomColor,
                 fontSize: '17px',
                 fontFamily: 'GroovyBubble',
@@ -99,12 +119,8 @@ export class Multiplier extends Phaser.GameObjects.Rectangle {
 
 
         }
-
+        this.text.setText(`${this.a}:${this.aStorage} * ${this.b}:${this.bStorage}`);
         if (this.aStorage > 0 && this.bStorage > 0) {
-            this.text.setText(`${this.a}:${this.aStorage} * ${this.b}:${this.bStorage}`);
-            
-            this.setFillStyle(0x00FF00);
-
             this.countdown -= delta;
             if (this.countdown <= 0) {
                 this.aStorage--;
@@ -116,13 +132,9 @@ export class Multiplier extends Phaser.GameObjects.Rectangle {
                 this.Scene.bubbles.add(bubble, true);
             }
         }
-        else {
-            var needed = this.a * this.b;
-            this.text.setText(`Multiply two numbers`);
-            this.setFillStyle(0x000000);
-        }
+        
 
-        Phaser.Display.Align.In.Center(this.text, this);
+        //Phaser.Display.Align.In.Center(this.text, this);
 
         
 

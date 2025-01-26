@@ -22,6 +22,7 @@ export class MainScene extends Phaser.Scene {
         this.load.spritesheet('fanAnim', 'images/fanAnim.png', { frameWidth: 225, frameHeight: 225 });
 
         Spawner.staticPreload(this);
+        Multiplier.staticPreload(this);
     }
 
     create() {
@@ -41,7 +42,10 @@ export class MainScene extends Phaser.Scene {
         combiners.add(new Combiner(this,middle+50,bottom-500,2,3),true);
         this.physics.add.collider(this.bubbles, combiners,Combiner.handleCollision);
 
-        var multipliers = this.physics.add.staticGroup();
+        var multipliers = this.physics.add.group({
+            immovable: true,
+            allowGravity: false
+        });
         multipliers.add(new Multiplier(this,middle+50,bottom-200),true);
         this.physics.add.collider(this.bubbles, multipliers,Multiplier.handleCollision);
         

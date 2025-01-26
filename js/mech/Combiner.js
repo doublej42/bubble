@@ -23,7 +23,7 @@ export class Combiner extends Phaser.GameObjects.Rectangle {
     countdown = 0;
     bubbleCount = 0;
     constructor(scene, x, y, a, b) {
-        console.log('Combiner constructor');
+        //console.log('Combiner constructor');
 
         super(scene, x, y, 300, 100, 0x000000);
 
@@ -41,7 +41,7 @@ export class Combiner extends Phaser.GameObjects.Rectangle {
         else if (object1.value === object2.b) {
             object2.bStorage++;
         }
-        console.log('Collision', object2.aStorage, object2.bStorage);
+        //console.log('Collision', object2.aStorage, object2.bStorage);
         object1.destroy();
 
     }
@@ -79,7 +79,7 @@ export class Combiner extends Phaser.GameObjects.Rectangle {
             if (this.countdown <= 0) {
                 this.aStorage--;
                 this.bStorage--;
-                console.log('this.bubbleCount', this.bubbleCount);
+                //console.log('this.bubbleCount', this.bubbleCount);
                 this.countdown = this.spawnSpeed;
                 var bubble = new Bubble(this.Scene, this.x, this.y - (this.height / 2) - 25, this.a * this.b);
                 bubble.id = this.bubbleCount++;
