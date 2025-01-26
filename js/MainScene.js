@@ -18,12 +18,11 @@ export class MainScene extends Phaser.Scene {
     preload() {
         console.log('preload MainScene',this);
         this.playfield.preload();
-        this.load.image('multHud', 'images/multHud.png');
-        this.load.image('trash', 'images/trash.png');
         this.load.spritesheet('fanAnim', 'images/fanAnim.png', { frameWidth: 225, frameHeight: 225 });
 
         Spawner.staticPreload(this);
         Multiplier.staticPreload(this);
+        HUD.preload(this);
     }
 
     create() {

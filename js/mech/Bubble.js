@@ -10,33 +10,63 @@ const colourChoices = [
 ]
 
 export class Bubble extends Phaser.GameObjects.Image {
-    Scene;
+    scene;
     id;
     value;
     text = null;
+    isSfxAdded = false;
+    sfx = {};
+
     constructor (scene, x, y,value)
     {
         super(scene, x, y, 'bubble');
-        this.Scene = scene;
+        this.scene = scene;
         this.setTexture('bubble');
         this.value = value;
-        //console.log('bubble',this);
+        this.ensureSfxAdded();
+        this.playPopSound();
+
         //https://docs.phaser.io/phaser/concepts/gameobjects/text
+    }
+
+    ensureSfxAdded() {
+        if(!this.isSfxAdded) {
+            // create the pop sound effects
+            this.sfx.pops = [
+                this.scene.sound.add('bubblePop1'),
+                this.scene.sound.add('bubblePop2'),
+                this.scene.sound.add('bubblePop3'),
+                this.scene.sound.add('bubblePop4'),
+                this.scene.sound.add('bubblePop5'),
+                this.scene.sound.add('bubblePop6'),
+            ];
+
+            this.isSfxAdded = true;
+        }
+    }
+    
+    // play a random bubble pop sound
+    playPopSound() {
+        this.sfx.pops[Math.floor(Math.random() * this.sfx.pops.length)].play();
     }
     
     static staticPreload(scene)
     {
         scene.load.image('bubble', 'images/bubble.png');
+        scene.load.audio('bubblePop1', 'audio/bubblePop1.wav');
+        scene.load.audio('bubblePop2', 'audio/bubblePop2.wav');
+        scene.load.audio('bubblePop3', 'audio/bubblePop3.wav');
+        scene.load.audio('bubblePop4', 'audio/bubblePop4.wav');
+        scene.load.audio('bubblePop5', 'audio/bubblePop5.wav');
+        scene.load.audio('bubblePop6', 'audio/bubblePop6.wav');
     }
-    
-
 
     preUpdate(delta, time) {
         if (this.text === null)
         {
             const randomColor = colourChoices[Math.floor(Math.random() * colourChoices.length)];
             //console.log('bubble preupdate first',randomColor);
-            this.text = this.Scene.add.text(this.x, this.y-10, this.value, {
+            this.text = this.scene.add.text(this.x, this.y-10, this.value, {
                 color: randomColor,
                 fontSize: '19px',
                 fontFamily: 'GroovyBubble',
