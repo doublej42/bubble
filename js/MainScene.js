@@ -16,6 +16,7 @@ export class MainScene extends Phaser.Scene {
         this.playfield.preload();
         this.load.image('rightFan', 'images/rightFan.png');
         this.load.image('multHud', 'images/multHud.png');
+        this.load.image('trash', 'images/trash.png');
         this.load.spritesheet('fanAnim', 'images/fanAnim.png', { frameWidth: 225, frameHeight: 225 });
         Spawner.staticPreload(this);
     }
@@ -25,7 +26,7 @@ export class MainScene extends Phaser.Scene {
         var bounds = this.cameras.main.getBounds();
         var middle = bounds.width/2;
         var bottom = bounds.height;
-        this.add.existing(new Spawner(this,middle,bottom));
+        this.add.existing(new Spawner(this, middle, bottom));
         this.createHUD();
     }
 
@@ -96,10 +97,30 @@ export class MainScene extends Phaser.Scene {
                     ;
                 this.input.setDraggable(newRightFanIcon);
 
+                let hoveredHud = false;
+
                 // Add drag event listeners to the new icon
                 newRightFanIcon.on('drag', (pointer, dragX, dragY) => {
                     newRightFanIcon.x = dragX;
                     newRightFanIcon.y = dragY;
+
+                    // if it is over the hud, turn off the animation and change the texture to trash
+                    if (newRightFanIcon.x < hudWidth - 50 + this.cameras.main.scrollX) {
+                        newRightFanIcon.setTexture('trash');
+                        newRightFanIcon.anims.stop();
+                        hoveredHud = true;
+                    } else {
+                        newRightFanIcon.setTexture('fanAnim');
+                        newRightFanIcon.anims.play('fanSpin');
+                        hoveredHud = false;
+                    }
+                });
+
+                // if the icon is dragged off the hud, destroy it
+                newRightFanIcon.on('dragend', (pointer) => {
+                    if (hoveredHud) {
+                        newRightFanIcon.destroy();
+                    }
                 });
             }
 
@@ -146,9 +167,29 @@ export class MainScene extends Phaser.Scene {
                 newLeftFanIcon.flipX = true;
                 this.input.setDraggable(newLeftFanIcon);
 
+                let hoveredHud = false;
+
                 newLeftFanIcon.on('drag', (pointer, dragX, dragY) => {
                     newLeftFanIcon.x = dragX;
                     newLeftFanIcon.y = dragY;
+
+                    // if it is over the hud, turn off the animation and change the texture to trash
+                    if (newLeftFanIcon.x < hudWidth - 50 + this.cameras.main.scrollX) {
+                        newLeftFanIcon.setTexture('trash');
+                        newLeftFanIcon.anims.stop();
+                        hoveredHud = true;
+                    } else {
+                        newLeftFanIcon.setTexture('fanAnim');
+                        newLeftFanIcon.anims.play('fanSpin');
+                        hoveredHud = false;
+                    }
+                });
+
+                // if the icon is dragged off the hud, destroy it
+                newLeftFanIcon.on('dragend', (pointer) => {
+                    if (hoveredHud) {
+                        newLeftFanIcon.destroy();
+                    }
                 });
             }
 
