@@ -76,5 +76,27 @@ export class Fan extends Phaser.GameObjects.Sprite {
 
     preUpdate(time, delta) {
         super.preUpdate(time, delta);
+
+        if (this.blowing) {
+            const fanPosition = new Phaser.Math.Vector2(this.x, this.y);
+            const distance = new Phaser.Math.Vector2();
+            const force = new Phaser.Math.Vector2();
+            const acceleration = new Phaser.Math.Vector2();
+
+            for (const bubble of this.scene.bubbles.getChildren()) {
+                distance.copy(bubble.body.center).subtract(fanPosition);
+                force.copy(distance).setLength(50000 / distance.lengthSq()).limit(1000);
+
+                // Adjust the force direction based on the fan's direction
+                if (this.direction === 'left') {
+                    force.x = -Math.abs(force.x);
+                } else if (this.direction === 'right') {
+                    force.x = Math.abs(force.x);
+                }
+
+                acceleration.copy(force).scale(1 / bubble.body.mass);
+                bubble.body.velocity.add(acceleration);
+            }
+        }
     }
 }
