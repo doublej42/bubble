@@ -3,7 +3,7 @@
 import { Fan } from './Fan.js';
 
 // TODO: modularize this code so the hud could be anywhere
-let hudWidth = 100;
+const hudWidth = 100;
 
 export class HudFan extends Phaser.GameObjects.Sprite {
     scene;
@@ -31,8 +31,6 @@ export class HudFan extends Phaser.GameObjects.Sprite {
         this.setInteractive();
         scene.input.setDraggable(newRightFanIcon);
 
-        let hoveredHud = false;
-
         const rightFanIcon = this;
         rightFanIcon.on('drag', (pointer, dragX, dragY) => {
             rightFanIcon.x = dragX;
@@ -41,7 +39,7 @@ export class HudFan extends Phaser.GameObjects.Sprite {
     
         rightFanIcon.on('dragend', (pointer) => {
             // If dragged outside HUD, place tile at drop location
-            if (rightFanIcon.x > 100) {
+            if (rightFanIcon.x > hudWidth) {
                 // Create a new tile in the world where dropped
                 scene.add.existing(new Fan(scene, pointer.worldX, pointer.worldY+20, direction, true));
             }
@@ -52,7 +50,7 @@ export class HudFan extends Phaser.GameObjects.Sprite {
         });
     }
     
-    static staticPreload(scene)
+    static preload(scene)
     {
     }
 
