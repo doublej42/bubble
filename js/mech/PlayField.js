@@ -1,4 +1,4 @@
-const GAMESIZE = 10000;
+const GAMESIZE = 1500;
 export class PlayField {
     Scene;
     Cursors;
