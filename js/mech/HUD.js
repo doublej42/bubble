@@ -2,6 +2,7 @@
 // this is where the fans and multiplier may be dragged into the world, or back to be destroyed
 
 import { HudFan } from './HudFan.js';
+import { VolumeSlider } from './VolumeSlider.js'
 
 export class HUD {
     constructor (scene)
@@ -46,11 +47,20 @@ export class HUD {
         });
         hudContainer.add(multText);
 
-
         // add multiplier icon for the hud
         const multHudIcon = scene.add.image(40, hudHeight - 340, 'multHud').setScale(0.3).setInteractive();
         hudContainer.add(multHudIcon);
 
+        // add a volume slider
+        const volumeSlider = new VolumeSlider(scene, 25, 20).setScrollFactor(0);
+        hudContainer.add(volumeSlider);
+    }
+
+    static preload(scene) {
+        HudFan.preload(scene);
+        VolumeSlider.preload(scene);
+        scene.load.image('multHud', 'images/multHud.png');
+        scene.load.image('trash', 'images/trash.png');
     }
     
     preUpdate(time, delta) {
