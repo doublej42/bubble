@@ -9,6 +9,7 @@ export class MainScene extends Phaser.Scene {
     cursors;
     playfield;
     bubbles;
+    multipliers;
     init() {
         // Instantiate the Playfield and pass the current scene as context
         this.playfield = new PlayField(this);
@@ -42,12 +43,12 @@ export class MainScene extends Phaser.Scene {
         combiners.add(new Combiner(this,middle+50,bottom-500,2,3),true);
         this.physics.add.collider(this.bubbles, combiners,Combiner.handleCollision);
 
-        var multipliers = this.physics.add.group({
+        this.multipliers = this.physics.add.group({
             immovable: true,
             allowGravity: false
         });
-        multipliers.add(new Multiplier(this,middle+50,bottom-200),true);
-        this.physics.add.collider(this.bubbles, multipliers,Multiplier.handleCollision);
+        
+        this.physics.add.collider(this.bubbles, this.multipliers,Multiplier.handleCollision);
         
         
         //https://github.com/phaserjs/examples/blob/00868cfbe0ce555c8e9f8ace3e3dc7d1504425ca/public/src/games/firstgame/part9.html#L57
