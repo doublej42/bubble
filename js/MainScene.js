@@ -103,12 +103,42 @@ export class MainScene extends Phaser.Scene {
         hudContainer.add(leftFanText);
 
         // add a left fan icon to the hud
-        const leftFanIcon = this.add.image(40, hudHeight - 220, 'rightFan').setScale(0.5).setInteractive();
+        const leftFanIcon = this.add.image(40, hudHeight - 220, 'rightFan')
+            .setScale(0.5)
+            .setInteractive()
+            .setScrollFactor(0)
+            ;
         leftFanIcon.flipX = true;
         hudContainer.add(leftFanIcon);
 
         // make it interactive
-        // TODO
+        this.input.setDraggable(leftFanIcon);
+
+        leftFanIcon.on('drag', (pointer, dragX, dragY) => { 
+            leftFanIcon.x = dragX;
+            leftFanIcon.y = dragY;
+        });
+
+        leftFanIcon.on('dragend', (pointer) => {
+            if (leftFanIcon.x > 100) {
+                const newLeftFanIcon = this.add.image(pointer.worldX - 55, pointer.worldY - 35, 'rightFan')
+                    .setScale(0.5)
+                    .setOrigin(0, 0)
+                    .setInteractive()
+                    .setScrollFactor(1)
+                    ;
+                newLeftFanIcon.flipX = true;
+                this.input.setDraggable(newLeftFanIcon);
+
+                newLeftFanIcon.on('drag', (pointer, dragX, dragY) => {
+                    newLeftFanIcon.x = dragX;
+                    newLeftFanIcon.y = dragY;
+                });
+            }
+
+            leftFanIcon.x = 40;
+            leftFanIcon.y = hudHeight - 220;
+        });
 
         // add multiplier text
         const multText = this.add.text(leftPadding, hudHeight - 310, "multiplier", {
