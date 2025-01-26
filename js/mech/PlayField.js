@@ -10,7 +10,7 @@ export class PlayField {
     
     preload()
     {
-        console.log('preload', this.Scene)
+        //console.log('preload', this.Scene)
         this.Scene.load.image('background', 'images/Pastel-Rainbow-17-Lemon-Paper-Lab.jpg')
     }
 

@@ -5,20 +5,19 @@ export class Spawner extends Phaser.GameObjects.Image {
     active = true;
     countdown = 0;
     bubbleCount = 0;
-    bubbles;
+    //bubbles;
     value;
     constructor (scene, x, y, value)
     {
         super(scene, x, y, 'spawner');
         this.Scene = scene;
         this.setTexture('spawner');
-        this.setPosition(x, y);
-        console.log('spawner',this);
+        //console.log('spawner',this);
         this.setOrigin(0.5,1);
-        this.bubbles = this.Scene.physics.add.group({
-            bounceX: 1,
-            bounceY: 1
-        });
+        // this.bubbles = this.Scene.physics.add.group({
+        //     bounceX: 1,
+        //     bounceY: 1
+        // });
         this.value = value;
     }
     
@@ -38,12 +37,12 @@ export class Spawner extends Phaser.GameObjects.Image {
         if (this.countdown <= 0)
         {
             this.countdown = this.spawnSpeed;
-            console.log('spawning bubble');
+            //console.log('spawning bubble');
             var bubble = new Bubble(this.Scene,this.x,this.y-(this.height/2),this.value);
             bubble.id = this.bubbleCount++;
             bubble.addToUpdateList();
-            this.bubbles.add(bubble);
-            this.scene.add.existing(bubble);
+            //this.bubbles.add(bubble,true);
+            this.scene.bubbles.add(bubble,true);
         }
 
     }
