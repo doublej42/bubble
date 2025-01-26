@@ -54,7 +54,7 @@ export class Combiner extends Phaser.GameObjects.Rectangle {
 
             this.text = this.Scene.add.text(this.x, this.y, "Inactive", {
                 color: randomColor,
-                fontSize: '19px',
+                fontSize: '17px',
                 fontFamily: 'GroovyBubble',
                 shadow: {
                     offsetX: 0,
@@ -70,7 +70,8 @@ export class Combiner extends Phaser.GameObjects.Rectangle {
         }
 
         if (this.aStorage > 0 && this.bStorage > 0) {
-            this.text.setText("Active");
+            //this.text.setText(`Active ${this.a}:${this.aStorage} ${this.b}:${this.bStorage}`);
+            this.text.setText(`Active`);
             this.setFillStyle(0x00FF00);
 
             this.countdown -= delta;
