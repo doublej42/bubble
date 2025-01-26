@@ -61,7 +61,6 @@ export class Goal extends Phaser.GameObjects.Container {
             object2.baseSprite.setTexture('goalSuccess');
             object2.countdown = object2.timeoutSpeed;
             var bubble = new Bubble(object2.Scene,object2.x,object2.y-(object2.height/2)-object1.height,object1.value);
-
             object2.Scene.bubbles.add(bubble,true);
         }
         //else
@@ -72,7 +71,7 @@ export class Goal extends Phaser.GameObjects.Container {
     }
 
     preUpdate(time, delta) {
-        console.log('Goal preUpdate', this);
+       
         //this is so it will turn off if stuff stops hitting it.
         if (this.scored) {
             //this.text.setText(`Active ${this.a}:${this.aStorage} ${this.b}:${this.bStorage}`);
