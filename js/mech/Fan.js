@@ -27,8 +27,7 @@ export class Fan extends Phaser.GameObjects.Sprite {
 
         this
             .setScale(0.5)
-            // .setInteractive()
-            // .setScrollFactor(0)
+            .setInteractive();
             // .setOrigin(0.5,1)
             ;
 
@@ -43,7 +42,6 @@ export class Fan extends Phaser.GameObjects.Sprite {
 
         let newRightFanIcon = this;
 
-        this.setInteractive();
         scene.input.setDraggable(newRightFanIcon);
 
         let hoveredHud = false;
@@ -76,8 +74,6 @@ export class Fan extends Phaser.GameObjects.Sprite {
     
     static staticPreload(scene)
     {
-        // scene.load.image('trash', 'images/trash.png');
-        // scene.load.spritesheet('fanAnim', 'images/fanAnim.png', { frameWidth: 225, frameHeight: 225 });
     }
 
     preUpdate(time, delta) {

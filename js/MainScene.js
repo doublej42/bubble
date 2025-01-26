@@ -1,6 +1,7 @@
 import {PlayField} from "./mech/PlayField.js"
 import {Spawner} from './mech/Spawner.js';
 import {Fan} from './mech/Fan.js';
+import {HudFan} from './mech/HudFan.js';
 import {Combiner} from './mech/Combiner.js'
 
 export class MainScene extends Phaser.Scene {
@@ -68,37 +69,8 @@ export class MainScene extends Phaser.Scene {
         });
         hudContainer.add(rightFanText);
 
-        // add a right fan icon to the hud
-        const rightFanIconStartPos = {x: 40, y: hudHeight - 80};
-        const rightFanIcon = scene.add.sprite(rightFanIconStartPos.x, rightFanIconStartPos.y, 'fanAnim')
-            .setScale(0.5)
-            .setInteractive()
-            .setScrollFactor(0)
-            ;
-        rightFanIcon.anims.play('fanSpin');
-
-        // add the icon to the container
-        hudContainer.add(rightFanIcon);
-    
-        // Make the tile draggable
-        scene.input.setDraggable(rightFanIcon);
-
-        rightFanIcon.on('drag', (pointer, dragX, dragY) => {
-            rightFanIcon.x = dragX;
-            rightFanIcon.y = dragY;
-        });
-    
-        rightFanIcon.on('dragend', (pointer) => {
-            // If dragged outside HUD, place tile at drop location
-            if (rightFanIcon.x > 100) {
-                // Create a new tile in the world where dropped
-                this.add.existing(new Fan(scene, pointer.worldX, pointer.worldY+20, 'right', true));
-            }
-
-            // Reset the HUD tile to its original position
-            rightFanIcon.x = rightFanIconStartPos.x;
-            rightFanIcon.y = rightFanIconStartPos.y;
-        });
+        const rightHudFan = new HudFan(scene, 40, hudHeight - 80, 'right');
+        hudContainer.add(rightHudFan);
 
         // HUD text to indicate item creation
         const leftFanText = this.add.text(leftPadding, hudHeight - 170, "left fan", {
@@ -107,33 +79,9 @@ export class MainScene extends Phaser.Scene {
         });
 
         hudContainer.add(leftFanText);
-
-        // add a left fan icon to the hud
-        const leftFanIconStartPos = {x: 40, y: hudHeight - 220};
-        const leftFanIcon = this.add.sprite(leftFanIconStartPos.x, leftFanIconStartPos.y, 'fanAnim')
-            .setScale(0.5)
-            .setInteractive()
-            .setScrollFactor(0)
-            ;
-        leftFanIcon.flipX = true;
-        hudContainer.add(leftFanIcon);
-
-        // make it interactive
-        this.input.setDraggable(leftFanIcon);
-
-        leftFanIcon.on('drag', (pointer, dragX, dragY) => { 
-            leftFanIcon.x = dragX;
-            leftFanIcon.y = dragY;
-        });
-
-        leftFanIcon.on('dragend', (pointer) => {
-            if (leftFanIcon.x > 100) {
-                this.add.existing(new Fan(scene, pointer.worldX, pointer.worldY+20, 'left', true));
-            }
-
-            leftFanIcon.x = leftFanIconStartPos.x;
-            leftFanIcon.y = leftFanIconStartPos.y;
-        });
+        
+        const leftHudFan = new HudFan(scene, 40, hudHeight - 220, 'left');
+        hudContainer.add(leftHudFan);
 
         // add multiplier text
         const multText = this.add.text(leftPadding, hudHeight - 310, "multiplier", {
