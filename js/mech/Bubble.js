@@ -86,6 +86,10 @@ export class Bubble extends Phaser.GameObjects.Image {
               }, this);
         }
         this.text.setPosition(this.x-5,this.y-10);
+        if (this.y < 0)
+        {
+            this.destroy();
+        }
         //super.preUpdate(delta, time);
         //console.log('bubble updating', this.id,this.value);
     }
