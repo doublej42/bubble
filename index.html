@@ -2,19 +2,29 @@
 <html>
 
 <head>
-    <style>
-      @font-face { font-family: GroovyBubble; src: url('Fonts/GroovyBubble.ttf'); } 
-      body{
-        margin: 0;
-        padding: 0;
-      }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/phaser@3.87.0/dist/phaser-arcade-physics.min.js"></script>
-    <script type="module" src="js/Game.js"></script>
+  <style>
+    @font-face {
+      font-family: GroovyBubble;
+      src: url('Fonts/GroovyBubble.ttf');
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.87.0/dist/phaser-arcade-physics.min.js"></script>
+  <script type="module" src="js/Game.js"></script>
 </head>
 
 <body>
-    <!-- <h1 style="font-family: GroovyBubble;">Bubble Factory</h1> -->
+  <div style="margin: 50px;">
+    <h1 style="font-family: GroovyBubble;">Bubble Factory</h1>
+    <p>Multiply numbers and get them to goals to score points.</p>
+    <p>Goals must stay active to score.</p>
+    <p>User Arrorws to scroll for more goals.</p>
+    <button id="startGame">Start Game</button>
+  </div>
 </body>
 
 </html>
