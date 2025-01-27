@@ -27,7 +27,7 @@ export class PlayField {
     }
 
     update() {
-        const scrollSpeed = 3; // Adjust the camera movement speed as needed
+        const scrollSpeed = 10; // Adjust the camera movement speed as needed
         
         var cursors = this.cursors;
         //console.log()

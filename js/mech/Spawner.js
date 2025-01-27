@@ -14,6 +14,7 @@ export class Spawner extends Phaser.GameObjects.Image {
         //console.log('spawner',this);
         this.setOrigin(0.5,1);
         this.value = value;
+        this.countdown =  Math.floor(Math.random() * 1000);
     }
     
     static staticPreload(scene)
@@ -31,7 +32,8 @@ export class Spawner extends Phaser.GameObjects.Image {
         
         if (this.countdown <= 0)
         {
-            this.countdown = this.spawnSpeed;
+            var randomvalue = Math.floor(Math.random() * 1000) - 500;
+            this.countdown = this.spawnSpeed + randomvalue;
             var bubble = new Bubble(this.Scene,this.x,this.y-(this.height/2),this.value);
             bubble.id = this.bubbleCount++;
             //bubble.addToUpdateList();

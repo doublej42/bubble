@@ -30,7 +30,7 @@ export class Goal extends Phaser.GameObjects.Container {
         this.baseSprite = this.Scene.add.sprite(0, 0, 'goal');
         this.add(this.baseSprite);
         this.setSize(this.baseSprite.width, this.baseSprite.height);
-        this.text = this.Scene.add.text(0, 0, `Provide\r\n${goal}`, {
+        this.text = this.Scene.add.text(0, 0, `Goal\r\n${goal}`, {
             color: "#000",
             fontSize: '17px',
             fontFamily: 'GroovyBubble',
