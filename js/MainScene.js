@@ -57,7 +57,7 @@ export class MainScene extends Phaser.Scene {
         this.goals.add(new Goal(this,middle-300,bottom-1300,7),true);
         this.goals.add(new Goal(this,middle-300,bottom-2310,2310),true);
 
-        this.goals.add(new Goal(this,middle-3400,bottom-3400,5),true);
+        this.goals.add(new Goal(this,middle-1600,bottom-3400,5),true);
 
         
 

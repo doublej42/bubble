@@ -24,7 +24,8 @@ export class HUD {
         hudContainer.add(hudBg);
 
         const rightFanText = scene.add.text(leftPadding, hudHeight - 30, "right fan", {
-            font: '18px Arial',
+            fontSize: '17px',
+            fontFamily: 'GroovyBubble',
             fill: '#000000'
         });
         hudContainer.add(rightFanText);
@@ -34,7 +35,8 @@ export class HUD {
 
         // HUD text to indicate item creation
         const leftFanText = scene.add.text(leftPadding, hudHeight - 170, "left fan", {
-            font: '18px Arial',
+            fontSize: '17px',
+            fontFamily: 'GroovyBubble',
             fill: '#000000'
         });
 
@@ -45,7 +47,8 @@ export class HUD {
 
         // add multiplier text
         const multText = scene.add.text(leftPadding, hudHeight - 310, "multiplier", {
-            font: '18px Arial',
+            fontSize: '17px',
+            fontFamily: 'GroovyBubble',
             fill: '#000000'
         });
         hudContainer.add(multText);
