@@ -83,7 +83,7 @@ export class HUD {
     }
 
     update() {
-        console.log(this.scene.goals);
+        //console.log(this.scene.goals);
         const score = this.scene.goals.children.entries.filter(goal => goal.scored).length;
        
         //const score = 5;

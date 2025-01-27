@@ -36,12 +36,14 @@ export class MainScene extends Phaser.Scene {
         this.add.existing(new Spawner(this,middle,bottom,2));
         this.add.existing(new Spawner(this,middle+100,bottom,3));
         this.add.existing(new Spawner(this,middle-100,bottom,5));
+        this.add.existing(new Spawner(this,middle+800,bottom,7));
 
         this.bubbles = this.physics.add.group();
 
         this.goals = this.physics.add.staticGroup();
         this.goals.add(new Goal(this,middle+50,bottom-700,6),true);
         this.goals.add(new Goal(this,middle+300,bottom-1300,30),true);
+        this.goals.add(new Goal(this,middle-300,bottom-1300,7),true);
 
 
         this.physics.add.collider(this.bubbles, this.goals,Goal.handleCollision);
