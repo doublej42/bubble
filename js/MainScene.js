@@ -76,6 +76,27 @@ export class MainScene extends Phaser.Scene {
         this.hud = new HUD(this);
         this.add.existing(this.hud);
 
+        //this works but the hud scales poorly
+        // this.input.on("wheel",  (pointer, gameObjects, deltaX, deltaY, deltaZ) => {
+
+        //     if (deltaY > 0) {
+        //         var newZoom = this.cameras.main.zoom -.1;
+        //         if (newZoom > 0.3) {
+        //             this.cameras.main.zoom = newZoom;     
+        //         }
+        //     }
+          
+        //     if (deltaY < 0) {
+        //         var newZoom = this.cameras.main.zoom +.1;
+        //         if (newZoom < 1.3) {
+        //             this.cameras.main.zoom = newZoom;     
+        //         }
+        //     }
+    
+        //     // this.camera.centerOn(pointer.worldX, pointer.worldY);
+        //     // this.camera.pan(pointer.worldX, pointer.worldY, 2000, "Power2");
+          
+        //   });
        
     }
 
